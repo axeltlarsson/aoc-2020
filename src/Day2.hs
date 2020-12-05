@@ -1,15 +1,18 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Day2
   ( solve
   , passwordPolicy
   , parser
   ) where
 
+import qualified Data.Text as T
 import Text.ParserCombinators.ReadP
 
 solve = do
   input <- readFile "data/day2_full.txt"
   let parsed = parse $ lines input
-  let valids = filter validPassword parsed
+  let valids = filter validPassword2 parsed
   print $ length valids
 
 parse :: [String] -> [Password]
@@ -59,3 +62,9 @@ validPassword :: Password -> Bool
 validPassword (Password min max ch pswd) =
   let occurrences = length $ filter (== ch) pswd
    in occurrences >= min && occurrences <= max
+
+validPassword2 :: Password -> Bool
+validPassword2 (Password min max ch pswd) =
+  let fstCh = T.index (T.pack pswd) (min - 1)
+      sndCh = T.index (T.pack pswd) (max - 1)
+   in fstCh == ch && sndCh /= ch || sndCh == ch && fstCh /= ch
