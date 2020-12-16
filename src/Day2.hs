@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 module Day2
   ( solve
   , passwordPolicy
@@ -24,13 +22,16 @@ digit = satisfy (\char -> char >= '0' && char <= '9')
 number :: ReadP Int
 number = fmap read (many1 digit)
 
+character :: ReadP Char
+character = satisfy (\char -> char >= 'a' && char <= 'z')
+
 passwordPolicy :: ReadP (Int, Int, Char)
 passwordPolicy = do
   min <- number
   string "-"
   max <- number
   string " "
-  ch <- satisfy (\char -> char >= 'a' && char <= 'z')
+  ch <- character
   return (min, max, ch)
 
 {- example:
@@ -48,7 +49,7 @@ data Password =
   deriving (Show)
 
 password :: ReadP String
-password = many1 (satisfy (\char -> char >= 'a' && char <= 'z'))
+password = many1 character
 
 parser :: ReadP Password
 parser = do
