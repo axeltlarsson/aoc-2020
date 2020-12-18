@@ -6,4 +6,4 @@ import Day3 as Day3
 import Day4 as Day4
 
 main :: IO ()
-main = Day4.solve
+main = Day2.solve
